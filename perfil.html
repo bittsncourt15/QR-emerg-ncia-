@@ -2,40 +2,35 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Informações de Emergência</title>
+  <title>Perfil de Emergência</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff6f6;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    h2 {
-      color: #c0392b;
-      text-align: center;
-    }
-    p {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
+    body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; background: #f3f3f3; text-align: center; }
+    img { max-width: 200px; border-radius: 8px; margin: 20px 0; }
+    .info { background: white; padding: 10px; margin-bottom: 10px; border-radius: 5px; text-align: left; }
   </style>
 </head>
 <body>
   <h2>Informações de Emergência</h2>
-  <p><strong>Nome:</strong> <span id="nome"></span></p>
-  <p><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></p>
-  <p><strong>Condições Médicas:</strong> <span id="cond"></span></p>
-  <p><strong>Medicamentos:</strong> <span id="meds"></span></p>
-  <p><strong>Contato de Emergência:</strong> <span id="contato"></span></p>
+  <img id="foto" alt="Foto do paciente">
+  <div class="info"><strong>Nome:</strong> <span id="nome"></span></div>
+  <div class="info"><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></div>
+  <div class="info"><strong>Condições Médicas:</strong> <span id="cond"></span></div>
+  <div class="info"><strong>Medicamentos:</strong> <span id="meds"></span></div>
+  <div class="info"><strong>Contato:</strong> <span id="contato"></span></div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const campos = ['nome', 'sangue', 'cond', 'meds', 'contato'];
+    const dados = JSON.parse(localStorage.getItem('perfilEmergencia'));
 
-    campos.forEach(campo => {
-      document.getElementById(campo).textContent = decodeURIComponent(params.get(campo) || '');
-    });
+    if (dados) {
+      document.getElementById('nome').textContent = dados.nome;
+      document.getElementById('sangue').textContent = dados.sangue;
+      document.getElementById('cond').textContent = dados.cond;
+      document.getElementById('meds').textContent = dados.meds;
+      document.getElementById('contato').textContent = dados.contato;
+      document.getElementById('foto').src = dados.foto;
+    } else {
+      document.body.innerHTML = "<p style='color:red;'>Dados não encontrados. Geração do QR deve ser refeita neste dispositivo.</p>";
+    }
   </script>
 </body>
 </html>
