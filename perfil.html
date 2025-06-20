@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <title>Informações de Emergência</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #ffecec; }
-    h2 { color: darkred; }
-    p { font-size:18px; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff6f6;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #c0392b;
+      text-align: center;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -15,11 +27,14 @@
   <p><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></p>
   <p><strong>Condições Médicas:</strong> <span id="cond"></span></p>
   <p><strong>Medicamentos:</strong> <span id="meds"></span></p>
-  <p><strong>Contato:</strong> <span id="contato"></span></p>
+  <p><strong>Contato de Emergência:</strong> <span id="contato"></span></p>
+
   <script>
     const params = new URLSearchParams(window.location.search);
-    ['nome','sangue','cond','meds','contato'].forEach(id => {
-      document.getElementById(id).textContent = decodeURIComponent(params.get(id) || '');
+    const campos = ['nome', 'sangue', 'cond', 'meds', 'contato'];
+
+    campos.forEach(campo => {
+      document.getElementById(campo).textContent = decodeURIComponent(params.get(campo) || '');
     });
   </script>
 </body>
