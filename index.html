@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>QR Emergência Completo</title>
+  <title>QR Emergência com Foto + SUS</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     body {
@@ -41,6 +41,25 @@
       margin-top: 30px;
       text-align: center;
     }
+    #baixarBtn {
+      display: none;
+      background-color: #2980b9;
+      margin: 15px auto 0;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      max-width: 200px;
+    }
+    #alerta {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -61,6 +80,9 @@
       <option value="O+">O+</option>
       <option value="O-">O-</option>
     </select>
+
+    <label>Cartão do SUS:</label>
+    <input type="text" id="cartaoSus" placeholder="Número do cartão do SUS" maxlength="15" />
 
     <label>Alergias:</label>
     <textarea id="alergias" placeholder="Ex: Penicilina, pólen..."></textarea>
@@ -108,50 +130,98 @@
     <label>Observações adicionais:</label>
     <textarea id="observacoes" placeholder="Outras informações importantes"></textarea>
 
+    <label>Foto (opcional, max 50 KB):</label>
+    <input type="file" id="foto" accept="image/*" />
+
     <button type="submit">Gerar QR Code</button>
   </form>
 
+  <div id="alerta"></div>
   <div id="qrcode"></div>
+  <button id="baixarBtn">Baixar QR Code</button>
 
   <script>
     const form = document.getElementById('formulario');
     const qrcodeDiv = document.getElementById('qrcode');
+    const alerta = document.getElementById('alerta');
+    const fotoInput = document.getElementById('foto');
+    const baixarBtn = document.getElementById('baixarBtn');
+
+    baixarBtn.style.display = 'none';
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      alerta.textContent = '';
+      qrcodeDiv.innerHTML = '';
+      baixarBtn.style.display = 'none';
 
-      // Pegar todos os dados e codificar para URL
-      const dados = {
-        nome: encodeURIComponent(document.getElementById('nome').value),
-        sangue: encodeURIComponent(document.getElementById('sangue').value),
-        alergias: encodeURIComponent(document.getElementById('alergias').value),
-        meds: encodeURIComponent(document.getElementById('meds').value),
-        contato: encodeURIComponent(document.getElementById('contato').value),
-        doencas: encodeURIComponent(document.getElementById('doencas').value),
-        dispositivos: encodeURIComponent(document.getElementById('dispositivos').value),
-        medico: encodeURIComponent(document.getElementById('medico').value),
-        cirurgias: encodeURIComponent(document.getElementById('cirurgias').value),
-        vacinacoes: encodeURIComponent(document.getElementById('vacinacoes').value),
-        instrucoes: encodeURIComponent(document.getElementById('instrucoes').value),
-        peso: encodeURIComponent(document.getElementById('peso').value),
-        altura: encodeURIComponent(document.getElementById('altura').value),
-        plano: encodeURIComponent(document.getElementById('plano').value),
-        doador: encodeURIComponent(document.getElementById('doador').value),
-        observacoes: encodeURIComponent(document.getElementById('observacoes').value),
-      };
+      function gerarQR(fotoBase64 = '') {
+        const dados = {
+          nome: encodeURIComponent(document.getElementById('nome').value),
+          sangue: encodeURIComponent(document.getElementById('sangue').value),
+          cartaoSus: encodeURIComponent(document.getElementById('cartaoSus').value),
+          alergias: encodeURIComponent(document.getElementById('alergias').value),
+          meds: encodeURIComponent(document.getElementById('meds').value),
+          contato: encodeURIComponent(document.getElementById('contato').value),
+          doencas: encodeURIComponent(document.getElementById('doencas').value),
+          dispositivos: encodeURIComponent(document.getElementById('dispositivos').value),
+          medico: encodeURIComponent(document.getElementById('medico').value),
+          cirurgias: encodeURIComponent(document.getElementById('cirurgias').value),
+          vacinacoes: encodeURIComponent(document.getElementById('vacinacoes').value),
+          instrucoes: encodeURIComponent(document.getElementById('instrucoes').value),
+          peso: encodeURIComponent(document.getElementById('peso').value),
+          altura: encodeURIComponent(document.getElementById('altura').value),
+          plano: encodeURIComponent(document.getElementById('plano').value),
+          doador: encodeURIComponent(document.getElementById('doador').value),
+          observacoes: encodeURIComponent(document.getElementById('observacoes').value),
+          foto: encodeURIComponent(fotoBase64),
+        };
 
-      // Criar a URL com todos os dados como parâmetros GET
-      const url = `${window.location.origin}/QR-emergencia1/perfil.html?` + 
-        Object.entries(dados).map(([k,v]) => `${k}=${v}`).join('&');
+        const url = `${window.location.origin}/QR-emergencia1/perfil.html?` +
+          Object.entries(dados).map(([k,v]) => `${k}=${v}`).join('&');
 
-      // Gerar o QR Code
-      qrcodeDiv.innerHTML = "";
-      new QRCode(qrcodeDiv, {
-        text: url,
-        width: 256,
-        height: 256
-      });
+        new QRCode(qrcodeDiv, {
+          text: url,
+          width: 256,
+          height: 256,
+        });
+
+        // Mostrar botão baixar depois de 500ms
+        setTimeout(() => {
+          baixarBtn.style.display = 'block';
+        }, 500);
+      }
+
+      if (fotoInput.files.length > 0) {
+        const file = fotoInput.files[0];
+
+        if (file.size > 50 * 1024) {
+          alerta.textContent = 'Foto muito grande! Por favor, envie uma imagem menor que 50KB.';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function() {
+          gerarQR(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        gerarQR('');
+      }
     });
+
+    baixarBtn.onclick = () => {
+      // Pega a imagem gerada do QRCode (geralmente dentro do qrcodeDiv um <img>)
+      const img = qrcodeDiv.querySelector('img');
+      if (!img) {
+        alert('QR Code não encontrado!');
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = img.src;
+      link.download = 'qr_emergencia.png';
+      link.click();
+    };
   </script>
 </body>
 </html>
