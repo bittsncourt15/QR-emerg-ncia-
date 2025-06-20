@@ -1,23 +1,59 @@
-<script>
-  const formulario = document.getElementById("formulario");
-  const qrcodeContainer = document.getElementById("qrcode");
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerar QR de Emergência</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; background: #f9f9f9; }
+    h2 { text-align: center; color: #c0392b; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    input, textarea, button {
+      width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;
+    }
+    button { background: #c0392b; color: white; border: none; margin-top: 15px; cursor: pointer; }
+    #qrcode { text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>QR de Emergência</h2>
+  <form id="formulario">
+    <label>Nome completo:</label>
+    <input type="text" id="nome" required>
 
-  formulario.addEventListener("submit", function (e) {
-    e.preventDefault();
+    <label>Tipo sanguíneo:</label>
+    <input type="text" id="sangue" required>
 
-    const nome = encodeURIComponent(document.getElementById("nome").value);
-    const sangue = encodeURIComponent(document.getElementById("sangue").value);
-    const cond = encodeURIComponent(document.getElementById("cond").value);
-    const meds = encodeURIComponent(document.getElementById("meds").value);
-    const contato = encodeURIComponent(document.getElementById("contato").value);
+    <label>Condições médicas:</label>
+    <textarea id="cond"></textarea>
 
-    const url = `${window.location.origin}/perfil.html?nome=${nome}&sangue=${sangue}&cond=${cond}&meds=${meds}&contato=${contato}`;
+    <label>Medicamentos:</label>
+    <textarea id="meds"></textarea>
 
-    qrcodeContainer.innerHTML = "";
-    new QRCode(qrcodeContainer, {
-      text: url,
-      width: 256,
-      height: 256,
+    <label>Contato de emergência:</label>
+    <input type="text" id="contato" required>
+
+    <button type="submit">Gerar QR Code</button>
+  </form>
+
+  <div id="qrcode"></div>
+
+  <script>
+    const form = document.getElementById("formulario");
+    const qrcodeDiv = document.getElementById("qrcode");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nome = encodeURIComponent(document.getElementById("nome").value);
+      const sangue = encodeURIComponent(document.getElementById("sangue").value);
+      const cond = encodeURIComponent(document.getElementById("cond").value);
+      const meds = encodeURIComponent(document.getElementById("meds").value);
+      const contato = encodeURIComponent(document.getElementById("contato").value);
+
+      const url = `${window.location.origin}/QR-emergencia1/perfil.html?nome=${nome}&sangue=${sangue}&cond=${cond}&meds=${meds}&contato=${contato}`;
+      qrcodeDiv.innerHTML = "";
+      new QRCode(qrcodeDiv, { text: url, width: 256, height: 256 });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
