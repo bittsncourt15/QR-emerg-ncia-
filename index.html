@@ -1,79 +1,23 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>QR de Emergência com Foto</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <style>
-    body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; background: #f3f3f3; }
-    label { display: block; margin-top: 10px; font-weight: bold; }
-    input, textarea, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; }
-    button { background-color: #c0392b; color: white; border: none; cursor: pointer; }
-    #qrcode { margin-top: 20px; text-align: center; }
-  </style>
-</head>
-<body>
-  <h2>Cadastro Emergencial com QR</h2>
-  <form id="formulario">
-    <label>Nome completo:</label>
-    <input type="text" id="nome" required>
-    
-    <label>Tipo sanguíneo:</label>
-    <input type="text" id="sangue" required>
-    
-    <label>Condições médicas:</label>
-    <textarea id="cond"></textarea>
-    
-    <label>Medicamentos:</label>
-    <textarea id="meds"></textarea>
-    
-    <label>Contato de emergência:</label>
-    <input type="text" id="contato" required>
+<script>
+  const formulario = document.getElementById("formulario");
+  const qrcodeContainer = document.getElementById("qrcode");
 
-    <label>Foto de identificação:</label>
-    <input type="file" id="foto" accept="image/*" required>
+  formulario.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-    <button type="submit">Gerar QR Code</button>
-  </form>
+    const nome = encodeURIComponent(document.getElementById("nome").value);
+    const sangue = encodeURIComponent(document.getElementById("sangue").value);
+    const cond = encodeURIComponent(document.getElementById("cond").value);
+    const meds = encodeURIComponent(document.getElementById("meds").value);
+    const contato = encodeURIComponent(document.getElementById("contato").value);
 
-  <div id="qrcode"></div>
+    const url = `${window.location.origin}/perfil.html?nome=${nome}&sangue=${sangue}&cond=${cond}&meds=${meds}&contato=${contato}`;
 
-  <script>
-    const form = document.getElementById('formulario');
-    const qrcodeDiv = document.getElementById('qrcode');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const nome = document.getElementById('nome').value;
-      const sangue = document.getElementById('sangue').value;
-      const cond = document.getElementById('cond').value;
-      const meds = document.getElementById('meds').value;
-      const contato = document.getElementById('contato').value;
-      const fotoFile = document.getElementById('foto').files[0];
-
-      if (!fotoFile) return alert("Adicione uma foto!");
-
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const fotoBase64 = event.target.result;
-
-        const dados = {
-          nome, sangue, cond, meds, contato, foto: fotoBase64
-        };
-
-        localStorage.setItem('perfilEmergencia', JSON.stringify(dados));
-
-        const url = `${window.location.origin}/perfil.html`;
-        qrcodeDiv.innerHTML = "";
-        new QRCode(qrcodeDiv, {
-          text: url,
-          width: 256,
-          height: 256
-        });
-      };
-      reader.readAsDataURL(fotoFile);
+    qrcodeContainer.innerHTML = "";
+    new QRCode(qrcodeContainer, {
+      text: url,
+      width: 256,
+      height: 256,
     });
-  </script>
-</body>
-</html>
+  });
+</script>
