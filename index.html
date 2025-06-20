@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -55,7 +56,7 @@
   </style>
 </head>
 <body>
-  <h2>Dados de Emergência</h2>
+  <h2>Formulário de Emergência</h2>
   <form id="formulario">
     <label>Nome completo:</label>
     <input type="text" id="nome" required />
@@ -85,11 +86,38 @@
     <label>Contato de emergência:</label>
     <input type="text" id="contato" required />
 
-    <label>Condições médicas:</label>
+    <label>Doenças crônicas:</label>
     <textarea id="doencas"></textarea>
+
+    <label>Condições médicas:</label>
+    <textarea id="condicoes"></textarea>
+
+    <label>Dispositivos médicos:</label>
+    <textarea id="dispositivos"></textarea>
+
+    <label>Médico principal:</label>
+    <input type="text" id="medico" />
+
+    <label>Cirurgias recentes:</label>
+    <textarea id="cirurgias"></textarea>
+
+    <label>Vacinações:</label>
+    <textarea id="vacinacoes"></textarea>
 
     <label>Instruções especiais:</label>
     <textarea id="instrucoes"></textarea>
+
+    <label>Peso (kg):</label>
+    <input type="number" id="peso" />
+
+    <label>Altura (cm):</label>
+    <input type="number" id="altura" />
+
+    <label>Observações:</label>
+    <textarea id="observacoes"></textarea>
+
+    <label>Plano de saúde:</label>
+    <input type="text" id="plano" />
 
     <label>Doador de órgãos?</label>
     <select id="doador">
@@ -114,24 +142,19 @@
       qrcodeDiv.innerHTML = "";
       baixarBtn.style.display = "none";
 
-      const dados = {
-        nome: document.getElementById("nome").value,
-        sangue: document.getElementById("sangue").value,
-        cartaoSus: document.getElementById("cartaoSus").value,
-        alergias: document.getElementById("alergias").value,
-        meds: document.getElementById("meds").value,
-        contato: document.getElementById("contato").value,
-        doencas: document.getElementById("doencas").value,
-        instrucoes: document.getElementById("instrucoes").value,
-        doador: document.getElementById("doador").value,
-      };
+      const campos = [
+        "nome", "sangue", "cartaoSus", "alergias", "meds", "contato", "doencas",
+        "condicoes", "dispositivos", "medico", "cirurgias", "vacinacoes",
+        "instrucoes", "peso", "altura", "observacoes", "plano", "doador"
+      ];
 
-      const query = new URLSearchParams();
-      for (const [key, val] of Object.entries(dados)) {
-        query.append(key, val);
-      }
+      const params = new URLSearchParams();
+      campos.forEach(campo => {
+        const valor = document.getElementById(campo).value;
+        params.append(campo, valor);
+      });
 
-      const url = `${window.location.origin}/QR-emergencia1/perfil.html?${query.toString()}`;
+      const url = `${window.location.origin}/QR-emergencia1/perfil.html?${params.toString()}`;
 
       new QRCode(qrcodeDiv, {
         text: url,
