@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -62,26 +61,13 @@
     <input type="text" id="nome" required />
 
     <label>Tipo sanguíneo:</label>
-    <select id="sangue" required>
-      <option value="">Selecione</option>
-      <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
-    </select>
-
-    <label>Cartão do SUS:</label>
-    <input type="text" id="cartaoSus" maxlength="15" />
+    <input type="text" id="sangue" required />
 
     <label>Alergias:</label>
     <textarea id="alergias"></textarea>
 
     <label>Medicamentos:</label>
-    <textarea id="meds"></textarea>
+    <textarea id="medicamentos"></textarea>
 
     <label>Contato de emergência:</label>
     <input type="text" id="contato" required />
@@ -102,7 +88,7 @@
     <textarea id="cirurgias"></textarea>
 
     <label>Vacinações:</label>
-    <textarea id="vacinacoes"></textarea>
+    <textarea id="vacinas"></textarea>
 
     <label>Instruções especiais:</label>
     <textarea id="instrucoes"></textarea>
@@ -143,15 +129,15 @@
       baixarBtn.style.display = "none";
 
       const campos = [
-        "nome", "sangue", "cartaoSus", "alergias", "meds", "contato", "doencas",
-        "condicoes", "dispositivos", "medico", "cirurgias", "vacinacoes",
-        "instrucoes", "peso", "altura", "observacoes", "plano", "doador"
+        "nome", "sangue", "alergias", "medicamentos", "contato",
+        "doencas", "condicoes", "dispositivos", "medico", "cirurgias",
+        "vacinas", "instrucoes", "peso", "altura", "observacoes",
+        "plano", "doador"
       ];
 
       const params = new URLSearchParams();
       campos.forEach(campo => {
-        const valor = document.getElementById(campo).value;
-        params.append(campo, valor);
+        params.append(campo, document.getElementById(campo).value);
       });
 
       const url = `${window.location.origin}/QR-emergencia1/perfil.html?${params.toString()}`;
