@@ -1,30 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Perfil de Emergência</title>
+  <meta charset="UTF-8" />
+  <title>Perfil Emergencial Completo</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; background: #f9f9f9; }
-    h2 { text-align: center; color: #c0392b; }
-    .info { background: white; margin: 10px 0; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-    .info strong { color: #333; display: block; margin-bottom: 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h2 {
+      text-align: center;
+      color: #c0392b;
+    }
+    .campo {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .campo strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .campo span {
+      white-space: pre-wrap; /* mantém quebras de linha */
+    }
   </style>
 </head>
 <body>
   <h2>Informações de Emergência</h2>
-  <div class="info"><strong>Nome:</strong> <span id="nome"></span></div>
-  <div class="info"><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></div>
-  <div class="info"><strong>Condições Médicas:</strong> <span id="cond"></span></div>
-  <div class="info"><strong>Medicamentos:</strong> <span id="meds"></span></div>
-  <div class="info"><strong>Contato de Emergência:</strong> <span id="contato"></span></div>
+
+  <div class="campo"><strong>Nome completo:</strong> <span id="nome"></span></div>
+  <div class="campo"><strong>Tipo sanguíneo:</strong> <span id="sangue"></span></div>
+  <div class="campo"><strong>Alergias:</strong> <span id="alergias"></span></div>
+  <div class="campo"><strong>Medicamentos:</strong> <span id="meds"></span></div>
+  <div class="campo"><strong>Contato de emergência:</strong> <span id="contato"></span></div>
+  <div class="campo"><strong>Doenças crônicas / Condições médicas:</strong> <span id="doencas"></span></div>
+  <div class="campo"><strong>Dispositivos médicos:</strong> <span id="dispositivos"></span></div>
+  <div class="campo"><strong>Contato médico principal:</strong> <span id="medico"></span></div>
+  <div class="campo"><strong>Cirurgias recentes:</strong> <span id="cirurgias"></span></div>
+  <div class="campo"><strong>Vacinações importantes:</strong> <span id="vacinacoes"></span></div>
+  <div class="campo"><strong>Instruções especiais:</strong> <span id="instrucoes"></span></div>
+  <div class="campo"><strong>Peso (kg):</strong> <span id="peso"></span></div>
+  <div class="campo"><strong>Altura (cm):</strong> <span id="altura"></span></div>
+  <div class="campo"><strong>Plano de saúde:</strong> <span id="plano"></span></div>
+  <div class="campo"><strong>Doador de órgãos:</strong> <span id="doador"></span></div>
+  <div class="campo"><strong>Observações adicionais:</strong> <span id="observacoes"></span></div>
 
   <script>
-    const p = new URLSearchParams(window.location.search);
-    document.getElementById("nome").textContent = p.get("nome") || "-";
-    document.getElementById("sangue").textContent = p.get("sangue") || "-";
-    document.getElementById("cond").textContent = p.get("cond") || "-";
-    document.getElementById("meds").textContent = p.get("meds") || "-";
-    document.getElementById("contato").textContent = p.get("contato") || "-";
+    const params = new URLSearchParams(window.location.search);
+
+    const campos = [
+      'nome', 'sangue', 'alergias', 'meds', 'contato', 'doencas',
+      'dispositivos', 'medico', 'cirurgias', 'vacinacoes', 'instrucoes',
+      'peso', 'altura', 'plano', 'doador', 'observacoes'
+    ];
+
+    campos.forEach(campo => {
+      document.getElementById(campo).textContent = params.get(campo) || '-';
+    });
   </script>
 </body>
 </html>
