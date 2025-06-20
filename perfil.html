@@ -28,7 +28,12 @@
       color: #555;
     }
     .campo span {
-      white-space: pre-wrap; /* mantém quebras de linha */
+      white-space: pre-wrap;
+    }
+    #foto {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -37,33 +42,7 @@
 
   <div class="campo"><strong>Nome completo:</strong> <span id="nome"></span></div>
   <div class="campo"><strong>Tipo sanguíneo:</strong> <span id="sangue"></span></div>
+  <div class="campo"><strong>Cartão do SUS:</strong> <span id="cartaoSus"></span></div>
   <div class="campo"><strong>Alergias:</strong> <span id="alergias"></span></div>
   <div class="campo"><strong>Medicamentos:</strong> <span id="meds"></span></div>
-  <div class="campo"><strong>Contato de emergência:</strong> <span id="contato"></span></div>
-  <div class="campo"><strong>Doenças crônicas / Condições médicas:</strong> <span id="doencas"></span></div>
-  <div class="campo"><strong>Dispositivos médicos:</strong> <span id="dispositivos"></span></div>
-  <div class="campo"><strong>Contato médico principal:</strong> <span id="medico"></span></div>
-  <div class="campo"><strong>Cirurgias recentes:</strong> <span id="cirurgias"></span></div>
-  <div class="campo"><strong>Vacinações importantes:</strong> <span id="vacinacoes"></span></div>
-  <div class="campo"><strong>Instruções especiais:</strong> <span id="instrucoes"></span></div>
-  <div class="campo"><strong>Peso (kg):</strong> <span id="peso"></span></div>
-  <div class="campo"><strong>Altura (cm):</strong> <span id="altura"></span></div>
-  <div class="campo"><strong>Plano de saúde:</strong> <span id="plano"></span></div>
-  <div class="campo"><strong>Doador de órgãos:</strong> <span id="doador"></span></div>
-  <div class="campo"><strong>Observações adicionais:</strong> <span id="observacoes"></span></div>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-
-    const campos = [
-      'nome', 'sangue', 'alergias', 'meds', 'contato', 'doencas',
-      'dispositivos', 'medico', 'cirurgias', 'vacinacoes', 'instrucoes',
-      'peso', 'altura', 'plano', 'doador', 'observacoes'
-    ];
-
-    campos.forEach(campo => {
-      document.getElementById(campo).textContent = params.get(campo) || '-';
-    });
-  </script>
-</body>
-</html>
+  <div class="campo"><strong>Contato de emergência:</strong> <span id="contato"></span><
