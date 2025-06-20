@@ -1,3 +1,4 @@
+<!-- perfil.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,25 +31,41 @@
 <body>
   <h2>Informações de Emergência</h2>
 
-  <div class="campo"><strong>Nome:</strong> <span id="nome"></span></div>
-  <div class="campo"><strong>Tipo sanguíneo:</strong> <span id="sangue"></span></div>
-  <div class="campo"><strong>Cartão do SUS:</strong> <span id="cartaoSus"></span></div>
-  <div class="campo"><strong>Alergias:</strong> <span id="alergias"></span></div>
-  <div class="campo"><strong>Medicamentos:</strong> <span id="meds"></span></div>
-  <div class="campo"><strong>Contato de emergência:</strong> <span id="contato"></span></div>
-  <div class="campo"><strong>Condições médicas:</strong> <span id="doencas"></span></div>
-  <div class="campo"><strong>Instruções especiais:</strong> <span id="instrucoes"></span></div>
-  <div class="campo"><strong>Doador de órgãos:</strong> <span id="doador"></span></div>
+  <div id="dados"></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const campos = [
-      "nome", "sangue", "cartaoSus", "alergias", "meds",
-      "contato", "doencas", "instrucoes", "doador"
-    ];
-    campos.forEach(campo => {
-      document.getElementById(campo).textContent = params.get(campo) || "-";
-    });
+    const campos = {
+      nome: "Nome completo",
+      sangue: "Tipo sanguíneo",
+      cartaoSus: "Cartão do SUS",
+      alergias: "Alergias",
+      meds: "Medicamentos",
+      contato: "Contato de emergência",
+      doencas: "Doenças crônicas",
+      condicoes: "Condições médicas",
+      dispositivos: "Dispositivos médicos",
+      medico: "Médico principal",
+      cirurgias: "Cirurgias recentes",
+      vacinacoes: "Vacinações",
+      instrucoes: "Instruções especiais",
+      peso: "Peso (kg)",
+      altura: "Altura (cm)",
+      observacoes: "Observações",
+      plano: "Plano de saúde",
+      doador: "Doador de órgãos"
+    };
+
+    const container = document.getElementById("dados");
+
+    for (const [campo, rotulo] of Object.entries(campos)) {
+      const valor = params.get(campo) || "-";
+      const div = document.createElement("div");
+      div.className = "campo";
+      div.innerHTML = `<strong>${rotulo}:</strong> ${valor}`;
+      container.appendChild(div);
+    }
   </script>
 </body>
 </html>
+
