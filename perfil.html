@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>Perfil de Emergência</title>
   <style>
-    body { font-family: sans-serif; background: #f3f3f3; max-width: 500px; margin: auto; padding: 20px; }
-    .info { margin-bottom: 10px; background: white; padding: 10px; border-radius: 5px; }
-    strong { display: block; margin-bottom: 5px; color: #c0392b; }
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; background: #f9f9f9; }
+    h2 { text-align: center; color: #c0392b; }
+    .info { background: white; margin: 10px 0; padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .info strong { color: #333; display: block; margin-bottom: 5px; }
   </style>
 </head>
 <body>
   <h2>Informações de Emergência</h2>
-
   <div class="info"><strong>Nome:</strong> <span id="nome"></span></div>
   <div class="info"><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></div>
   <div class="info"><strong>Condições Médicas:</strong> <span id="cond"></span></div>
@@ -19,13 +19,12 @@
   <div class="info"><strong>Contato de Emergência:</strong> <span id="contato"></span></div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-
-    document.getElementById("nome").textContent = params.get("nome") || "-";
-    document.getElementById("sangue").textContent = params.get("sangue") || "-";
-    document.getElementById("cond").textContent = params.get("cond") || "-";
-    document.getElementById("meds").textContent = params.get("meds") || "-";
-    document.getElementById("contato").textContent = params.get("contato") || "-";
+    const p = new URLSearchParams(window.location.search);
+    document.getElementById("nome").textContent = p.get("nome") || "-";
+    document.getElementById("sangue").textContent = p.get("sangue") || "-";
+    document.getElementById("cond").textContent = p.get("cond") || "-";
+    document.getElementById("meds").textContent = p.get("meds") || "-";
+    document.getElementById("contato").textContent = p.get("contato") || "-";
   </script>
 </body>
 </html>
