@@ -1,4 +1,3 @@
-<!-- perfil.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,24 +29,21 @@
 </head>
 <body>
   <h2>Informações de Emergência</h2>
-
   <div id="dados"></div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
     const campos = {
       nome: "Nome completo",
       sangue: "Tipo sanguíneo",
-      cartaoSus: "Cartão do SUS",
       alergias: "Alergias",
-      meds: "Medicamentos",
+      medicamentos: "Medicamentos",
       contato: "Contato de emergência",
       doencas: "Doenças crônicas",
       condicoes: "Condições médicas",
       dispositivos: "Dispositivos médicos",
       medico: "Médico principal",
       cirurgias: "Cirurgias recentes",
-      vacinacoes: "Vacinações",
+      vacinas: "Vacinações",
       instrucoes: "Instruções especiais",
       peso: "Peso (kg)",
       altura: "Altura (cm)",
@@ -56,10 +52,11 @@
       doador: "Doador de órgãos"
     };
 
+    const params = new URLSearchParams(window.location.search);
     const container = document.getElementById("dados");
 
-    for (const [campo, rotulo] of Object.entries(campos)) {
-      const valor = params.get(campo) || "-";
+    for (const [chave, rotulo] of Object.entries(campos)) {
+      const valor = params.get(chave) || "-";
       const div = document.createElement("div");
       div.className = "campo";
       div.innerHTML = `<strong>${rotulo}:</strong> ${valor}`;
