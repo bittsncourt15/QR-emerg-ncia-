@@ -1,38 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>QR de Emergência</title>
+  <meta charset="UTF-8" />
+  <title>Gerar QR de Emergência</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
-    #qrcode { margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f3f3f3;
+      max-width: 500px;
+      margin: auto;
+    }
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-top: 5px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      margin-top: 15px;
+      background-color: #c0392b;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #e74c3c;
+    }
+    #qrcode {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #baixarBtn {
+      display: none;
+      margin-top: 10px;
+      background-color: #2980b9;
+    }
+    #instrucoes {
+      margin-top: 30px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #444;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+      input, textarea, button {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Gerador de QR Code com dados de emergência</h2>
-  <form id="form">
-    <label>Nome completo:</label><input type="text" id="nome" required>
-    <label>Tipo sanguíneo:</label><input type="text" id="sangue" required>
-    <label>Condições médicas:</label><textarea id="cond"></textarea>
-    <label>Medicamentos que usa:</label><textarea id="meds"></textarea>
-    <label>Contato de emergência (nome e telefone):</label><input type="text" id="contato" required>
+  <h2>Preencha seus dados para gerar um QR de emergência</h2>
+
+  <form id="formulario">
+    <label for="nome">Nome completo:</label>
+    <input type="text" id="nome" required />
+
+    <label for="sangue">Tipo sanguíneo:</label>
+    <input type="text" id="sangue" required />
+
+    <label for="cond">Condições médicas (ex: asma, diabetes):</label>
+    <textarea id="cond"></textarea>
+
+    <label for="meds">Medicamentos que utiliza:</label>
+    <textarea id="meds"></textarea>
+
+    <label for="contato">Contato de emergência (nome e telefone):</label>
+    <input type="text" id="contato" required />
+
     <button type="submit">Gerar QR Code</button>
   </form>
+
   <div id="qrcode"></div>
+  <button id="baixarBtn">Baixar QR Code</button>
+
+  <div id="instrucoes">
+    <h3>Instruções para socorristas</h3>
+    <p>Escaneie o QR Code acima para acessar as informações médicas e contato de emergência da pessoa.</p>
+    <p>Essas informações podem ajudar em casos de acidentes ou emergências.</p>
+  </div>
+
   <script>
-    document.getElementById('form').addEventListener('submit', function(e){
+    const formulario = document.getElementById("formulario");
+    const qrcodeContainer = document.getElementById("qrcode");
+    const baixarBtn = document.getElementById("baixarBtn");
+
+    // Função para carregar dados do localStorage no formulário
+    function carregarDados() {
+      const campos = ["nome", "sangue", "cond", "meds", "contato"];
+      campos.forEach(campo => {
+        const valor = localStorage.getItem(campo);
+        if (valor) document.getElementById(campo).value = valor;
+      });
+    }
+
+    // Função para salvar dados no localStorage
+    function salvarDados() {
+      const campos = ["nome", "sangue", "cond", "meds", "contato"];
+      campos.forEach(campo => {
+        const valor = document.getElementById(campo).value;
+        localStorage.setItem(campo, valor);
+      });
+    }
+
+    // Carregar dados ao abrir a página
+    carregarDados();
+
+    formulario.addEventListener("submit", function(e) {
       e.preventDefault();
-      const nome=encodeURIComponent(document.getElementById('nome').value);
-      const sangue=encodeURIComponent(document.getElementById('sangue').value);
-      const cond=encodeURIComponent(document.getElementById('cond').value);
-      const meds=encodeURIComponent(document.getElementById('meds').value);
-      const contato=encodeURIComponent(document.getElementById('contato').value);
-      const url=`perfil.html?nome=${nome}&sangue=${sangue}&cond=${cond}&meds=${meds}&contato=${contato}`;
-      document.getElementById("qrcode").innerHTML="";
-      new QRCode(document.getElementById("qrcode"), { text:url, width:256, height:256 });
-      this.reset();
+
+      salvarDados();
+
+      const nome = encodeURIComponent(document.getElementById("nome").value);
+      const sangue = encodeURIComponent(document.getElementById("sangue").value);
+      const cond = encodeURIComponent(document.getElementById("cond").value);
+      const meds = encodeURIComponent(document.getElementById("meds").value);
+      const contato = encodeURIComponent(document.getElementById("contato").value);
+
+      const url = `perfil.html?nome=${nome}&sangue=${sangue}&cond=${cond}&meds=${meds}&contato=${contato}`;
+
+      qrcodeContainer.innerHTML = "";
+      const qr = new QRCode(qrcodeContainer, {
+        text: url,
+        width: 256,
+        height: 256,
+      });
+
+      // Esperar um pouquinho para o QR ser criado antes de permitir baixar
+      setTimeout(() => {
+        baixarBtn.style.display = "block";
+
+        // Apagar evento anterior para evitar múltiplos downloads
+        baixarBtn.onclick = () => {
+          // O QR Code gera um <img> dentro do container
+          const img = qrcodeContainer.querySelector("img");
+          if (!img) return alert("QR Code não encontrado!");
+          const link = document.createElement("a");
+          link.href = img.src;
+          link.download = "qr_emergencia.png";
+          link.click();
+        };
+      }, 500);
+
+      // Não limpar o formulário para permitir edição
     });
   </script>
 </body>
