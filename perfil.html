@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Informações de Emergência</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #ffecec; }
+    h2 { color: darkred; }
+    p { font-size:18px; }
+  </style>
+</head>
+<body>
+  <h2>Informações de Emergência</h2>
+  <p><strong>Nome:</strong> <span id="nome"></span></p>
+  <p><strong>Tipo Sanguíneo:</strong> <span id="sangue"></span></p>
+  <p><strong>Condições Médicas:</strong> <span id="cond"></span></p>
+  <p><strong>Medicamentos:</strong> <span id="meds"></span></p>
+  <p><strong>Contato:</strong> <span id="contato"></span></p>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    ['nome','sangue','cond','meds','contato'].forEach(id => {
+      document.getElementById(id).textContent = decodeURIComponent(params.get(id) || '');
+    });
+  </script>
+</body>
+</html>
